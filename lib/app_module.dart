@@ -80,7 +80,7 @@ class AppModule extends Module {
             Bind.factory((i) => BlocSignIn(i())),
             Bind.factory((i) => BlocSignUp(signUp: i())),
             Bind.lazySingleton((i) => BlocHome(signOut: i())),
-            Bind.lazySingleton((i) => BlocDeposit(i(), i())),
+            Bind.factory((i) => BlocDeposit(i(), i())),
             Bind.lazySingleton((i) => BlocExtract(i(), i())),
             Bind.lazySingleton((i) => BlocProfile(i(), i())),
             Bind.lazySingleton((i) => BlocNotification(i(), i(), i())),
