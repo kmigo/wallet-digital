@@ -6,6 +6,8 @@ import '../domain/erros/failure.dart';
 enum StatusAuthentication {
   unknow,
   authentication,
+  signup,
+  signin,
   unauthentication,
   signOut,
   error

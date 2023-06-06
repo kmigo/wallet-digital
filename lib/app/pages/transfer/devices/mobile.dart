@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'dart:developer' as dev;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -123,18 +122,7 @@ class _TransferMobileState extends State<TransferMobile> {
     );
   }
 
-  _qrcodeInvalid() {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: TopColors.redColor,
-        duration: const Duration(seconds: 2),
-        content: TopText(
-          text: 'QRCode invalido!!!',
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge
-              ?.copyWith(color: TopColors.thirdColor),
-        )));
-  }
+
   _error(String error){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration:  Duration(seconds: seconds),

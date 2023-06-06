@@ -32,9 +32,7 @@ class _SignUpMobileState extends State<SignUpMobile> {
           if (state is StateError) {
             _onError();
           }
-          if (state is StateSuccess) {
-            Modular.to.pushNamedAndRemoveUntil(AppRoutes.home,ModalRoute.withName(AppRoutes.splash));
-          }
+       
         },
         builder: (ctx, state) {
           return SingleChildScrollView(

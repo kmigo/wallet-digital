@@ -33,14 +33,20 @@ class _SplashPageState extends State<SplashPage> {
 
           switch (state.status.status) {
             case StatusAuthentication.authentication:
-              Navigator.of(context).pushNamed(AppRoutes.home);
+              Modular.to.pushNamed(AppRoutes.home);
               break;
             case StatusAuthentication.unauthentication:
-              Navigator.of(context).pushNamed(AppRoutes.signin);
+              Modular.to.pushNamedAndRemoveUntil(AppRoutes.signin,ModalRoute.withName(AppRoutes.splash));
               break;
             case StatusAuthentication.signOut:
             case StatusAuthentication.unknow:
             case StatusAuthentication.error:
+              break;
+            case StatusAuthentication.signup:
+    Modular.to.pushNamedAndRemoveUntil(AppRoutes.signin,ModalRoute.withName(AppRoutes.home));
+              break;
+            case StatusAuthentication.signin:
+
               break;
           }
         },

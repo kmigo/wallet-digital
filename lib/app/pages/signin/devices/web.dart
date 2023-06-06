@@ -40,9 +40,7 @@ class _SignInWebState extends State<SignInWeb> {
              if(state is StateError){
               _onError();
              }
-             if(state is StateSuccess ){
-              Navigator.of(context).pushReplacementNamed(AppRoutes.home);
-             }
+        
   
             },
             builder: (context, state) {

@@ -48,6 +48,12 @@ class _AppWidgetState extends State<AppWidget> {
             case StatusAuthentication.error:
               bloc.add(AuthenticationSignOutEvent());
               break;
+            case StatusAuthentication.signup:
+ Modular.to.pushNamedAndRemoveUntil(AppRoutes.home, ModalRoute.withName(AppRoutes.splash));
+              break;
+            case StatusAuthentication.signin:
+              Modular.to.pushNamedAndRemoveUntil(AppRoutes.home, ModalRoute.withName(AppRoutes.splash));
+              break;
           }
         } ,child: ScrollConfiguration(
           behavior: TopScroolBehavior(),

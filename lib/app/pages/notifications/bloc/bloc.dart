@@ -18,11 +18,11 @@ class BlocNotification extends Cubit<BaseState> {
     emit(StateLoading());
     final result = await _currentUserUsecase();
     result.fold((l) => emit(
-      StateError()
+      const StateError()
     ), (user) async{
       _user = user;
       final resultNotifications = await  _getAllNotificationsByCPF(user.cpf);
-      resultNotifications.fold((l) => emit(StateError()), (notifcations) => emit(StateSuccess(data: notifcations)));
+      resultNotifications.fold((l) => emit(const StateError()), (notifcations) => emit(StateSuccess(data: notifcations)));
     });
   }
 

@@ -32,9 +32,7 @@ class _SignUpTabletState extends State<SignUpTablet> {
           if (state is StateError) {
             _onError();
           }
-          if (state is StateSuccess) {
-            Modular.to.pushReplacementNamed(AppRoutes.home);
-          }
+      
         },
         builder: (ctx, state) {
           return SingleChildScrollView(

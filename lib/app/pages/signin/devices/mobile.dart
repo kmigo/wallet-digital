@@ -40,9 +40,7 @@ class _SignInMobileState extends State<SignInMobile> {
              if(state is StateError){
               _onError();
              }
-             if(state is StateSuccess ){
-              Navigator.of(context).pushReplacementNamed(AppRoutes.home);
-             }
+           
   
             },
             builder: (context, state) {

@@ -10,27 +10,29 @@ import '../../core/repository/authentication_repository.dart';
 
 class AutheticationRepositoryImpl extends AuthenticationRepository {
    final _controller = StreamController<AuthenticationStatus>();
-
+     StreamSubscription<UserEntity>? _streamSubscription;
    final AuthenticationDatasource _datasource;
-  AutheticationRepositoryImpl(this._datasource){
-    _listenUser();
-  }
+  AutheticationRepositoryImpl(this._datasource);
   @override
   Future<Either<Failure, UserEntity>> currentUser() async {
    try{
       final result = await _datasource.currentUser();
       if(result == null){
+        _streamSubscription?.cancel();
         _controller.add(AuthenticationStatus(result, StatusAuthentication.unauthentication));
         return const Left(Failure());
       }else{
+        _listenUser();
         _controller.add(AuthenticationStatus(result, StatusAuthentication.authentication));
       }
       
       return Right(result);
    }on Failure catch(e){
+    _streamSubscription?.cancel();
     _controller.add(const AuthenticationStatus(null, StatusAuthentication.error));
     return  Left(e);
    }catch(e){
+    _streamSubscription?.cancel();
     _controller.add(const AuthenticationStatus(null, StatusAuthentication.error));
       return const Left(genericError);
    }
@@ -40,12 +42,18 @@ class AutheticationRepositoryImpl extends AuthenticationRepository {
   Future<Either<Failure, UserEntity>> signIn(String username, String password) async{
     try{
    final user = await _datasource.signIn(username,password);
-      _controller.add( AuthenticationStatus(user, StatusAuthentication.authentication));
+      _controller.add( AuthenticationStatus(user, StatusAuthentication.signin));
+      
+
+    
+  _listenUser();
       return  Right(user);
    }on FirebaseAuthException catch(e){
+    _streamSubscription?.cancel();
       final message = _getFirebaseAuthErrorMessage(e.code);
       return  Left(Failure(message: message));
    }on Failure catch(e){
+    _streamSubscription?.cancel();
     _controller.add(const AuthenticationStatus(null, StatusAuthentication.error));
     return  Left(e);
    }catch(e){
@@ -56,13 +64,16 @@ class AutheticationRepositoryImpl extends AuthenticationRepository {
   @override
   Future<Either<Failure, void>> signOut() async{
     try{
+      _streamSubscription?.cancel();
       final result = await _datasource.signOut();
       _controller.add(const AuthenticationStatus(null, StatusAuthentication.signOut));
       return Right(result);
    } on Failure catch(e){
+    _streamSubscription?.cancel();
     _controller.add(const AuthenticationStatus(null, StatusAuthentication.error));
     return  Left(e);
    }catch(e){
+    _streamSubscription?.cancel();
       return const Left(genericError);
    }
   }
@@ -71,20 +82,26 @@ class AutheticationRepositoryImpl extends AuthenticationRepository {
   Future<Either<Failure, UserEntity>> signUp(UserEntity user, String password) async{
     try{
       final result = await _datasource.signUp(user,password);
-      _controller.add(AuthenticationStatus(result, StatusAuthentication.authentication));
+      _controller.add(AuthenticationStatus(result, StatusAuthentication.signup));
+      
+      _listenUser();
       return Right(result);
    }on FirebaseAuthException catch(e){
+    _streamSubscription?.cancel();
       final message = _getFirebaseAuthErrorMessage(e.code);
       return  Left(Failure(message: message));
    }on Failure catch(e){
+    _streamSubscription?.cancel();
     return  Left(e);
    }catch(e){
+    _streamSubscription?.cancel();
      return const Left(genericError);
    }
   }
     _listenUser()async{
+      _streamSubscription?.cancel();
     final userStream =  _datasource.realTimeUser();
-    userStream.listen((event) { 
+   _streamSubscription =  userStream.listen((event) { 
 
       _controller.add(AuthenticationStatus(event, StatusAuthentication.authentication));
     });

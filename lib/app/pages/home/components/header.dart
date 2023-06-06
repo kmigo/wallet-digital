@@ -27,6 +27,12 @@ class HomeHeader extends StatelessWidget {
           case StatusAuthentication.signOut:
           case StatusAuthentication.error:
             break;
+          case StatusAuthentication.signup:
+
+            break;
+          case StatusAuthentication.signin:
+
+            break;
         }
       },
       builder: (context, state) {

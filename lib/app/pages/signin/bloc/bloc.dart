@@ -11,7 +11,7 @@ class BlocSignIn extends Cubit<BaseState> {
     result.fold((l) {
       emit(StateError(message: l.message));
     }, (r) {
-      emit(StateSuccess());
+      emit(const StateSuccess());
     });
   }
 
