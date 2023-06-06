@@ -9,6 +9,8 @@ import 'package:wallet_digital/app/pages/notifications/components/tile_notificat
 import 'package:wallet_digital/core/domain/entities/notification.dart';
 import 'package:wallet_digital/ds/ds.dart';
 
+import '../../../../utils/app_routes.dart';
+
 class NotificationWeb extends StatefulWidget {
   const NotificationWeb({super.key});
 
@@ -27,8 +29,11 @@ class _NotificationWebState extends State<NotificationWeb> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: const TopAppBar(
-        title:  TopText(text: "Notificações"),
+      appBar:  TopAppBar(
+         onBack: () {
+          Modular.to.navigate(AppRoutes.home);
+        },
+        title: const  TopText(text: "Notificações"),
     
       ),
       body: BlocConsumer<BlocNotification, BaseState>(
