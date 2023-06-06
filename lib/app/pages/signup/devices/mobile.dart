@@ -212,7 +212,7 @@ class _SignUpMobileState extends State<SignUpMobile> {
   _onError() {
     final StateError error = (bloc.state as StateError);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 4),
+        duration: const Duration(seconds: 30),
         backgroundColor: Colors.red,
         content: TopText(
           text: error.message!,

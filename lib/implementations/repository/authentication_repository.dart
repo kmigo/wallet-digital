@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:wallet_digital/helpers/analytics.dart';
 
 import '../../core/datasource/authentication_user.dart';
 import '../../core/domain/entities/user.dart';
@@ -88,8 +90,21 @@ class AutheticationRepositoryImpl extends AuthenticationRepository {
       return Right(result);
    }on FirebaseAuthException catch(e){
     _streamSubscription?.cancel();
-      final message = _getFirebaseAuthErrorMessage(e.code);
-      return  Left(Failure(message: message));
+    final message = _getFirebaseAuthErrorMessage(e.code);
+    final idref =FirebaseDatabase.instance.ref('errors').push();
+    idref.set({
+      'event':'signUp-error-firebase',
+       'data':user.toMap(),
+        'error':e.toString(),
+        'message':message
+    });
+      
+      await HelperAnalytcs.sendAnalyticsEvent('signUp-error-firebase',{
+        'data':user.toMap(),
+        'error':e.toString(),
+        'message':message
+      });
+      return  Left(Failure(message: e.toString()));
    }on Failure catch(e){
     _streamSubscription?.cancel();
     return  Left(e);

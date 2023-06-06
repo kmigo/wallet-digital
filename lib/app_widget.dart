@@ -2,10 +2,12 @@
 
 
 
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:wallet_digital/ds/ds.dart';
+import 'package:wallet_digital/helpers/analytics.dart';
 import 'app/blocs/authententication/bloc.dart';
 import 'core/repository/authentication_repository.dart';
 import 'utils/app_routes.dart';
@@ -23,21 +25,25 @@ class AppWidget extends StatefulWidget {
 class _AppWidgetState extends State<AppWidget> {
   final bloc = Modular.get<AutheticationBloc>();
 
+
   @override
   Widget build(BuildContext context) {
     Modular.setInitialRoute(AppRoutes.splash);
     Modular.setNavigatorKey(CustomNavigatorKey.key);
+    Modular.setObservers([HelperAnalytcs.observer]);
     return MaterialApp.router(
       title: "Wallet Digital",
       theme: ThemeData(primarySwatch: Colors.blue),
+    
       builder: (context, child) {
+       
         return BlocListener<AutheticationBloc,AutheticationState>(
           bloc: bloc,
           listener:(context,state){
           switch(state.status.status){
             case StatusAuthentication.unknow:
             case StatusAuthentication.authentication:
-            break;
+              break;
             case StatusAuthentication.unauthentication:
 
             bloc.add(AuthenticationSignOutEvent());
@@ -49,10 +55,10 @@ class _AppWidgetState extends State<AppWidget> {
               bloc.add(AuthenticationSignOutEvent());
               break;
             case StatusAuthentication.signup:
- Modular.to.pushNamedAndRemoveUntil(AppRoutes.home, ModalRoute.withName(AppRoutes.splash));
+ Modular.to.pushReplacementNamed(AppRoutes.home);
               break;
             case StatusAuthentication.signin:
-              Modular.to.pushNamedAndRemoveUntil(AppRoutes.home, ModalRoute.withName(AppRoutes.splash));
+              Modular.to.pushReplacementNamed(AppRoutes.home);
               break;
           }
         } ,child: ScrollConfiguration(

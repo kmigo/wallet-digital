@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../core/repository/authentication_repository.dart';
-import '../../../utils/app_routes.dart';
 import '../../blocs/authententication/bloc.dart';
 
 class SplashPage extends StatefulWidget {
@@ -31,28 +29,15 @@ class _SplashPageState extends State<SplashPage> {
         bloc: bloc,
         listener: (context, state) {
 
-          switch (state.status.status) {
-            case StatusAuthentication.authentication:
-              Modular.to.pushNamed(AppRoutes.home);
-              break;
-            case StatusAuthentication.unauthentication:
-              Modular.to.pushNamedAndRemoveUntil(AppRoutes.signin,ModalRoute.withName(AppRoutes.splash));
-              break;
-            case StatusAuthentication.signOut:
-            case StatusAuthentication.unknow:
-            case StatusAuthentication.error:
-              break;
-            case StatusAuthentication.signup:
-    Modular.to.pushNamedAndRemoveUntil(AppRoutes.signin,ModalRoute.withName(AppRoutes.home));
-              break;
-            case StatusAuthentication.signin:
-
-              break;
-          }
+         
         },
         builder: (context, state) {
           return  Center(
-            child: Image.asset('assets/wallet.gif'),
+            child: Image.asset('assets/wallet.gif',
+            errorBuilder: (_,e,ee){
+              return const SizedBox();
+            },
+            ),
           );
         },
       ),
