@@ -40,6 +40,7 @@ dependencies:
   flutter_modular: ^5.0.3
   url_strategy: ^0.2.0
   flutter_qr_bar_scanner: ^3.0.2
+  mobile_scanner: ^3.2.0
   pretty_qr_code: ^2.0.3
   firebase_analytics: ^10.4.2
   jsqr: ^0.1.1
